@@ -29,6 +29,13 @@ return function(self,dt)
 			end
 		end
 
+		if object.cursorFunctions.IsClicking(1,params.x,params.y,params.wid,params.hei) then
+			object.input = "clicking"
+			print(1)
+		elseif object.cursorFunctions.IsHovering(params.x,params.y,params.wid,params.hei) then
+			object.input = "hovering"
+		else object.input = false
+		end
 		
 		object:update(object.params, object.state,dt)
 

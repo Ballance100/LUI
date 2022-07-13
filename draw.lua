@@ -1,4 +1,4 @@
-return function(self,dt)
+return function(self,dt) 
 	loop = function(object) --Recursively loops through the subsequent objects inside a parent object 
 		local params = object.params
 

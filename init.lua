@@ -14,7 +14,7 @@ end
 
 return {
 	
-
+	cursorFunctions = require(locale .. ".Love2D-CursorFunctions"),
 	state = nil,
 	objectList = {},
 
@@ -27,8 +27,16 @@ return {
 		end
 
 
-		object.parent = self; object.state = params.state;    object.requiredState = params.requiredState   
+		object.parent = self; object.state = params.state;    object.requiredState = params.requiredState  object.input = false 
 		object.objectList = {}
+
+		--Size can be used to scale font size and box size accordingly
+		if params.size then--If user is using size rather than width and height
+			params.text.font = love.graphics.newFont(params.text.fontName,params.size)
+			local font = params.text.font --shortcut
+			params.wid = font:getWidth(params.text.string)
+			params.hei = font:getHeight()
+		end
 
 		if not params.x then params.x = 0 end if not params.y then params.y = 0 end -- If positions dont exist
 
@@ -36,6 +44,10 @@ return {
 
 		setmetatable(object,self)
 		self.__index = self
+
+		--[[self.__newindex = function()
+
+		end]]
 
 		object:initialize(object.params)
 		self.objectList[#self.objectList+1] = object
@@ -47,11 +59,16 @@ return {
 
 	end,
 
-	getCenter = function(self)
+	getCenterX = function(self)
 		local p = self.params
 		local x = p.x + (p.wid/2)
+		return x
+	end,
+
+	getCenterY = function(self)
+		local p = self.params
 		local y = p.y + (p.hei/2)
-		return {x,y}
+		return y
 	end,
 
 	update = require(... .. ".update"),
