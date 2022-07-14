@@ -71,6 +71,10 @@ return {
 		return y
 	end,
 
+	changeState = function(self,newState)
+		self.state = newState
+	end,
+
 	update = require(... .. ".update"),
 
 	draw = require(... .. ".draw"),
