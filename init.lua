@@ -1,5 +1,6 @@
 local locale = ...
 local widgetList = {}
+local layoutList = {}
 
 for i,name in ipairs(love.filesystem.getDirectoryItems(locale .. "/widgets")) do
 	print("Widget: ".. name .. " loading...") -- Debugging, Keep
@@ -7,6 +8,13 @@ for i,name in ipairs(love.filesystem.getDirectoryItems(locale .. "/widgets")) do
 	print("Widget: ".. name .. " loaded \n")-- Debugging, Keep
 end
 
+
+for i,name in ipairs(love.filesystem.getDirectoryItems(locale .. "/layouts")) do
+	name = string.sub(name,1,-5)
+	print("Layout: ".. name .. " loading...") -- Debugging, Keep
+	layoutList[name] = require(... .. ".layouts." .. name)
+	print("Layout: ".. name .. " loaded \n")-- Debugging, Keep
+end
 
 
 
@@ -20,7 +28,7 @@ return {
 
 	newObject = function(self,widgetType,params)
 
-		local object = {}
+		local object = {type="widget"}
 		local widget = widgetList[widgetType]
 		for k, v in pairs(widget) do
  			object[k] = v
@@ -52,6 +60,13 @@ return {
 		object:initialize(object.params)
 		self.objectList[#self.objectList+1] = object
 
+		return object
+	end,
+
+	newLayout = function (self,layoutName,params)
+		local object = {type="layout"}
+
+		self.objectList = object
 		return object
 	end,
 
